@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -12,7 +14,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia('Posts/Index', [
+            'posts' => PostResource::collection(Post::with('user')->latest()->latest('id')->paginate()),
+        ]);
     }
 
     /**
@@ -36,7 +40,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $post->load('user');
+
+        return inertia('Posts/Show', [
+            'post' => PostResource::make($post)
+        ]);
     }
 
     /**

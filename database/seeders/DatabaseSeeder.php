@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             ->create([
                 'name' => 'Naum Zdravkov',
                 'email' => 'naumz@gmail.com',
+                'password' => '12345678'
             ]);
     }
 }
