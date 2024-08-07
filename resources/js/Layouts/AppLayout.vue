@@ -34,7 +34,7 @@ const menu = [
         when: () => usePage().props.auth.user
     },
     {
-        name: "Post",
+        name: "Posts",
         url: route('posts.index'),
         route: 'posts.index',
     },

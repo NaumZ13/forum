@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
@@ -28,7 +29,15 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+
+    Route::resource('posts.comments', CommentController::class)->shallow()->only(['store', 'update', 'destroy']);
+
+    // Route::post('posts/{post}/comment', [CommentController::class, 'store'])->name('posts.comments.store');
+    // Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    // Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
 });
 
 Route::get('posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('post/{post}', [PostController::class, 'show'])->name('posts.show');
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -43,7 +44,8 @@ class PostController extends Controller
         $post->load('user');
 
         return inertia('Posts/Show', [
-            'post' => PostResource::make($post)
+            'post' => fn () => PostResource::make($post), // inertia workaround, wrapping in closures. With this, will only be executed if its going to be passed down to the frontend. This is because I don't need to call the query post again when I paginate the comments.
+            'comments' => fn () => CommentResource::collection($post->comments()->with('user')->latest()->latest('id')->paginate(10))
         ]);
     }
 
