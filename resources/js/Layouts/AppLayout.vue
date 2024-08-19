@@ -7,6 +7,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import ConfirmationModalWrapper from "@/Components/ConfirmationModalWrapper.vue";
 
 defineProps({
     title: String,
@@ -37,6 +38,11 @@ const menu = [
         name: "Posts",
         url: route('posts.index'),
         route: 'posts.index',
+    },
+    {
+        name: "Create a Post",
+        url: route('posts.create'),
+        route: 'posts.create',
     },
 ]
 </script>
@@ -253,5 +259,7 @@ const menu = [
                 <slot />
             </main>
         </div>
+
+        <ConfirmationModalWrapper />
     </div>
 </template>

@@ -31,6 +31,7 @@ Route::middleware([
     })->name('dashboard');
 
 
+    Route::resource('posts', PostController::class)->only(['create','store']);
     Route::resource('posts.comments', CommentController::class)->shallow()->only(['store', 'update', 'destroy']);
 
     // Route::post('posts/{post}/comment', [CommentController::class, 'store'])->name('posts.comments.store');
@@ -38,6 +39,4 @@ Route::middleware([
     // Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
 });
 
-Route::get('posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('post/{post}', [PostController::class, 'show'])->name('posts.show');
-
+Route::resource('posts', PostController::class)->only(['index', 'show']);

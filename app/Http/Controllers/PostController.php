@@ -25,7 +25,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Posts/Create');
     }
 
     /**
@@ -33,7 +33,17 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $postData = $request->validate([
+            'title' => ['required', 'string', 'min:10', 'max:120'],
+            'body' => ['required', 'string', 'min:100', 'max:10000'],
+        ]);
+
+        $post = Post::create([
+            ...$postData,
+            'user_id' => $request->user()->id
+        ]);
+
+        return to_route('posts.show', $post);
     }
 
     /**
@@ -44,8 +54,8 @@ class PostController extends Controller
         $post->load('user');
 
         return inertia('Posts/Show', [
-            'post' => fn () => PostResource::make($post), // inertia workaround, wrapping in closures. With this, will only be executed if its going to be passed down to the frontend. This is because I don't need to call the query post again when I paginate the comments.
-            'comments' => fn () => CommentResource::collection($post->comments()->with('user')->latest()->latest('id')->paginate(10))
+            'post' => fn () => PostResource::make($post),
+            'comments' => fn () => CommentResource::collection($post->comments()->with('user')->latest()->latest('id')->paginate(10)),
         ]);
     }
 
