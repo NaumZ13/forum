@@ -5,7 +5,7 @@
             <span class="block mt-1 text-sm text-gray-600">{{ formattedDate }} ago by {{ post.user.name }}</span>
 
             <article class="mt-6">
-                <pre class="whitespace-pre-wrap font-sans">{{ post.body }}</pre>
+                <pre class="whitespace-pre-wrap break-words font-sans">{{ post.body }}</pre>
             </article>
 
             <div class="mt-12">
@@ -14,7 +14,7 @@
                 <form v-if="$page.props.auth.user" @submit.prevent="() => commentIdBeingEdited ? updateComment() : addComment()" class="mt-4">
                     <div>
                         <InputLabel for="body" class="sr-only">Comment</InputLabel>
-                        <TextArea ref="commentTextareaRef" id="body" v-model="commentForm.body" rows="4" placeholder="Speak your mind Spock…"/>
+                        <TextArea ref="commentTextAreaRef" id="body" v-model="commentForm.body" rows="4" placeholder="Speak your mind Spock…"/>
                         <InputError :message="commentForm.errors.body" class="mt-1" />
                     </div>
 

@@ -20,6 +20,9 @@
     },
     "dependencies": {
         "@heroicons/vue": "^2.1.5",
+        "@tiptap/pm": "^2.6.4",
+        "@tiptap/starter-kit": "^2.6.4",
+        "@tiptap/vue-3": "^2.6.4",
         "date-fns": "^3.6.0"
     }
 }

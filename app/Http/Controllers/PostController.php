@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+use Illuminate\Auth\Access\Gate;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate as FacadesGate;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -25,6 +29,8 @@ class PostController extends Controller
      */
     public function create()
     {
+        FacadesGate::authorize('create', Post::class);
+
         return inertia('Posts/Create');
     }
 
@@ -43,14 +49,19 @@ class PostController extends Controller
             'user_id' => $request->user()->id
         ]);
 
-        return to_route('posts.show', $post);
+        return redirect($post->showRoute());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Request $request, Post $post)
     {
+
+        if(!Str::contains($post->showRoute(), $request->path())){
+            return redirect($post->showRoute($request->query()), 301);
+        }
+
         $post->load('user');
 
         return inertia('Posts/Show', [

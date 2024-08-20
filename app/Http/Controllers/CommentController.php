@@ -19,35 +19,17 @@ class CommentController extends Controller
         $this->authorizeResource(Comment::class);
     }
     
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request, Post $post)
     {
-       $data = $request->validate([
-            'body' =>['required', 'string', 'max:2500']
-        ]);
-
-    //    Comment::make($data)
-    //         ->user()->associate($request->user())
-    //         ->post()->associate($post)
-    //         ->save();
+        $data = $request->validate(['body' => ['required', 'string', 'max:2500']]);
 
         Comment::create([
-            'user_id' => $request->user()->id,
+            ...$data,
             'post_id' => $post->id,
-            'body' => $data['body']
+            'user_id' => $request->user()->id,
         ]);
 
-        return to_route('posts.show', $post);
+        return redirect($post->showRoute());
     }
 
     /**
@@ -59,7 +41,7 @@ class CommentController extends Controller
 
         $comment->update($data);
 
-        return to_route('posts.show', ['post' => $comment->post_id, 'page' => $request->query('page')]);
+        return redirect($comment->post->showRoute(['page' => $request->query('page')]));
     }
 
     /**
@@ -69,6 +51,6 @@ class CommentController extends Controller
     {
         $comment->delete();
 
-        return to_route('posts.show', ['post' => $comment->post_id, 'page' => $request->query('page')]);
+        return redirect($comment->post->showRoute(['page' => $request->query('page')]));
     }
 }

@@ -4,7 +4,7 @@
     <Container>
       <ul class="divide-y">
          <li v-for="post in posts.data" :key="post.id" class="px-2 py-4">
-            <Link :href="route('posts.show', post.id)" class="group">
+            <Link :href="post.routes.show" class="group">
                <span class="font-bold text-lg group-hover:text-indigo-500 px-2 py-4">
                   {{ post.title  }}
                </span> 
