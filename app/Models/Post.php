@@ -25,6 +25,11 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function topic()
+    {
+        return $this->belongsTo(Topic::class);
+    }
+
     public function showRoute(array $parameters = []) {
         return route('posts.show', [$this, Str::slug($this->title), ...$parameters]);
     }

@@ -1,31 +1,72 @@
-
 <template>
    <AppLayout>
-    <Container>
-      <ul class="divide-y">
-         <li v-for="post in posts.data" :key="post.id" class="px-2 py-4">
-            <Link :href="post.routes.show" class="group">
-               <span class="font-bold text-lg group-hover:text-indigo-500 px-2 py-4">
-                  {{ post.title  }}
-               </span> 
-               <span class="block mt-1 text-sm text-gray-600">{{ formattedDate(post) }} ago by {{ post.user.name }}</span>
-            </Link>
-         </li>
-      </ul>
-      <Pagination :meta="posts.meta"/>
-    </Container>
+       <Container>
+         <div>
+            <PageHeading v-text="selectedTopic ? selectedTopic.name : 'All Posts'"></PageHeading>
+
+            <p v-if="selectedTopic" class="mt-1 text-gray-600 text-sm">{{ selectedTopic.description }}</p>
+
+            <menu class="flex space-x-1 mt-4 overflow-x-auto pb-3 pt-1">
+               <li>
+                  <Pill 
+                     :href="route('posts.index')"
+                     :filled="!selectedTopic"
+                     >
+                        All Posts
+                   </Pill>
+               </li>
+               <li v-for="topic in topics" :key="topic.id">
+                   <Pill 
+                     :href="route('posts.index', {topic: topic.slug})"
+                     :filled="topic.id === selectedTopic?.id"
+                     >
+                        {{ topic.name }}
+                   </Pill>
+               </li>
+            </menu>
+         </div>
+
+           <ul class="divide-y mt-4">
+               <li
+                   v-for="post in posts.data"
+                   :key="post.id"
+                   class="flex flex-col items-baseline justify-between md:flex-row"
+               >
+                   <Link
+                       :href="post.routes.show"
+                       class="group block px-2 py-4"
+                   >
+                       <span
+                           class="text-lg font-bold group-hover:text-indigo-500"
+                           >{{ post.title }}</span
+                       >
+                       <span
+                           class="block pt-1 text-sm text-gray-600 first-letter:uppercase"
+                           >{{ formattedDate(post) }} ago by
+                           {{ post.user.name }}</span
+                       >
+                   </Link>
+                   <Pill :href="route('posts.index', {topic: post.topic.slug})">
+                     {{ post.topic.name }}
+                   </Pill>
+               </li>
+           </ul>
+
+           <Pagination :meta="posts.meta" :only="['posts']" class="mt-2" />
+       </Container>
    </AppLayout>
 </template>
 <script setup>
+import AppLayout from "@/Layouts/AppLayout.vue";
+import Container from "@/Components/Container.vue";
+import Pagination from "@/Components/Pagination.vue";
+import { Link } from "@inertiajs/vue3";
+import { formatDistance, parseISO } from "date-fns";
+import { relativeDate } from "@/Utilities/Date.js";
+import PageHeading from "@/Components/PageHeading.vue";
+import Pill from "@/Components/Pill.vue";
 
-import AppLayout from '@/Layouts/AppLayout.vue';
-import Container from '@/Components/Container.vue';
-import Pagination from '@/Components/Pagination.vue';
-import { Link } from '@inertiajs/vue3';
-import { relativeDate } from '@/Utilities/Date';
-
-const props = defineProps(['posts']);
+defineProps(["posts", "selectedTopic", "topics"]);
 
 const formattedDate = (post) => relativeDate(post.created_at);
-
 </script>
