@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Comment;
 use App\Models\Post;
 
 it('uses title case for titles', function(){
@@ -21,9 +22,9 @@ it('can generate additional query parameters on the show route', function() {
 });
 
 it('generates the html', function () {
-    $post = Post::factory()->make(['body' => '## Hello world']);
+    $comment = Comment::factory()->make(['body' => '## Hello world']);
 
-    $post->save();
+    $comment->save();
 
-    expect($post->html)->toEqual(str($post->body)->markdown());
+    expect($comment->html)->toEqual(str($comment->body)->markdown());
 });
