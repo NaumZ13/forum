@@ -16,8 +16,8 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->whenLoaded('user', fn () => UserResource::make($this->user)), // if user rel on this post isnt loaded, it doesn't exist, It wont load in the user model.
-            'topic' => $this->whenLoaded('topic', fn () => TopicResource::make($this->topic)),
+            'user' => UserResource::make($this->whenLoaded('user')), // if user rel on this post isnt loaded, it doesn't exist, It wont load in the user model.
+            'topic' => TopicResource::make($this->whenLoaded('topic')),
             'title' => $this->title,
             'body' => $this->body,
             'html' => $this->html,

@@ -1,4 +1,7 @@
 <template>
+    <Head>
+        <link rel="canonical" :href="post.routes.show" />
+    </Head>
     <AppLayout :title="post.title">
         <Container>
             <Pill :href="route('posts.index', {topic: post.topic.slug})">{{ post.topic.name }}</Pill>
@@ -46,7 +49,7 @@ import Comment from "@/Components/Comment.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import {router, useForm} from "@inertiajs/vue3";
+import {router, useForm, Head} from "@inertiajs/vue3";
 import TextArea from "@/Components/TextArea.vue";
 import InputError from "@/Components/InputError.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
@@ -106,6 +109,9 @@ const deleteComment = async (commentId) => {
     }
 
     router.delete(route('comments.destroy', {comment: commentId, page: props.comments.meta.current_page}), {
+        page: props.comments.data.length > 1
+            ? props.comments.meta.current_page
+            : Math.max(props.comments.meta.current_page - 1, 1),
         preserveScroll: true,
     });
 };
