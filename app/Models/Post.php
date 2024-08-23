@@ -15,6 +15,8 @@ class Post extends Model
     
     protected $guarded = ['id'];
 
+    // protected $withCount = ['likes']; // always load a count into this model
+
     public function user() 
     {
         return $this->belongsTo(User::class);
@@ -36,5 +38,10 @@ class Post extends Model
 
     public function title(): Attribute {
         return Attribute::set(fn($value) => Str::title($value));
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
     }
 }
