@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
@@ -37,6 +38,9 @@ Route::middleware([
     // Route::post('posts/{post}/comment', [CommentController::class, 'store'])->name('posts.comments.store');
     // Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     // Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+
+    Route::post('/likes/{type}/{id}', [LikeController::class, 'store'])->name('likes.store');
+    Route::delete('/likes/{type}/{id}', [LikeController::class, 'destroy'])->name('likes.destroy');
 });
 
 Route::get('posts/{topic?}', [PostController::class, 'index'])->name('posts.index');
