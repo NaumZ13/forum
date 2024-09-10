@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
     use HasFactory;
     use ConvertsMarkdownToHtml;
+    use Searchable;
     
     protected $guarded = ['id'];
 
